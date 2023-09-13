@@ -1,6 +1,7 @@
 const breedSelect = document.querySelector('.breed-select');
 const catInfo = document.querySelector('.cat-info');
 const loader = document.querySelector('.loader');
+const error = document.querySelector('.error');
 
 export const fetchBreeds = () => {
   const url = 'https://api.thecatapi.com/v1/breeds';
@@ -24,7 +25,12 @@ export const fetchBreeds = () => {
         breedSelect.appendChild(option);
       }
       breedSelect.style.visibility = 'visible';
+      loader.style.visibility = 'hidden';
+      error.style.visibility = 'hidden';
       return names;
+    })
+    .catch(e => {
+      error.style.visibility = 'visible';
     });
 };
 
@@ -33,6 +39,8 @@ export const fetchCatByBreed = breedId => {
   const options = {};
 
   catInfo.innerHTML = '';
+  catInfo.style.visibility = 'hidden';
+  loader.style.visibility = 'visible';
 
   fetch(`https://api.thecatapi.com/v1/breeds/${breedId}`, options)
     .then(response => {
@@ -50,6 +58,10 @@ export const fetchCatByBreed = breedId => {
       catInfo.append(name);
       catInfo.append(description);
       catInfo.append(temperament);
+
+      catInfo.style.visibility = 'visible';
+      loader.style.visibility = 'hidden';
+      error.style.visibility = 'hidden';
     });
 
   return fetch(url, options)
@@ -65,5 +77,8 @@ export const fetchCatByBreed = breedId => {
       catInfo.append(img);
       img.maxWidth = 500;
       img.height = 400;
+    })
+    .catch(e => {
+      error.style.visibility = 'visible';
     });
 };
