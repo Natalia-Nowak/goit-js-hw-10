@@ -1,3 +1,7 @@
+import axios from 'axios';
+axios.defaults.headers.common['x-api-key'] =
+  'live_MqQKi3Hi1kOt7KytxsmN1IY78gHGByQrszZsUtR4GxeqRmZte8MjwxXbD9HWoq7P';
+
 const breedSelect = document.querySelector('.breed-select');
 const catInfo = document.querySelector('.cat-info');
 const loader = document.querySelector('.loader');
@@ -5,33 +9,8 @@ const error = document.querySelector('.error');
 
 export const fetchBreeds = () => {
   const url = 'https://api.thecatapi.com/v1/breeds';
-  const options = {};
 
-  breedSelect.style.visibility = 'hidden';
-  loader.style.visibility = 'visible';
-
-  return fetch(url, options)
-    .then(response => {
-      return response.json();
-    })
-    .then(data => {
-      const names = [];
-      console.log(data);
-      for (const element of data) {
-        names.push(element.name);
-        const option = document.createElement('option');
-        option.value = element.id;
-        option.innerHTML = element.name;
-        breedSelect.appendChild(option);
-      }
-      breedSelect.style.visibility = 'visible';
-      loader.style.visibility = 'hidden';
-      error.style.visibility = 'hidden';
-      return names;
-    })
-    .catch(e => {
-      error.style.visibility = 'visible';
-    });
+  return axios.get(url);
 };
 
 export const fetchCatByBreed = breedId => {
