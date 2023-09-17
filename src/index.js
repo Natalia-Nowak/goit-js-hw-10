@@ -44,5 +44,30 @@ breedSelect.addEventListener('change', e => {
       error.style.visibility = 'visible';
     });
 
-  fetchCatByBreed(breedId);
+  fetchCatByBreed(breedId)
+    .then(response => {
+      const name = document.createElement('h2');
+      const description = document.createElement('p');
+      const temperament = document.createElement('p');
+      const descriptionBlock = document.createElement('div');
+
+      name.innerHTML = response.data.name;
+      description.innerHTML = response.data.description;
+      temperament.innerHTML = response.data.temperament;
+
+      descriptionBlock.appendChild(name);
+      descriptionBlock.appendChild(description);
+      descriptionBlock.appendChild(temperament);
+      catInfo.append(descriptionBlock);
+
+      catInfo.style.visibility = 'visible';
+      loader.style.visibility = 'hidden';
+      error.style.visibility = 'hidden';
+      catInfo.style.display = 'flex';
+      catInfo.style.gap = '20px';
+      descriptionBlock.style.width = '500px';
+    })
+    .catch(e => {
+      error.style.visibility = 'visible';
+    });
 });
