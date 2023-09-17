@@ -12,32 +12,13 @@ export const fetchBreeds = () => {
 
   return axios.get(url);
 };
+export const fetchCatImage = breedId => {
+  const url = `https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`;
+  return axios.get(url);
+};
 
 export const fetchCatByBreed = breedId => {
-  const url = `https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`;
   const options = {};
-
-  catInfo.innerHTML = '';
-  catInfo.style.visibility = 'hidden';
-  loader.style.visibility = 'visible';
-
-  fetch(url, options)
-    .then(response => {
-      return response.json();
-    })
-    .then(data => {
-      console.log(data);
-      const img = document.createElement('img');
-      const imgUrl = data[0].url;
-      console.log(imgUrl);
-      img.src = imgUrl;
-      catInfo.append(img);
-      img.maxWidth = 400;
-      img.height = 200;
-    })
-    .catch(e => {
-      error.style.visibility = 'visible';
-    });
 
   return fetch(`https://api.thecatapi.com/v1/breeds/${breedId}`, options)
     .then(response => {

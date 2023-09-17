@@ -1,11 +1,11 @@
-import { fetchBreeds, fetchCatByBreed } from './cat-api';
+import { fetchBreeds, fetchCatByBreed, fetchCatImage } from './cat-api';
 
 const breedSelect = document.querySelector('.breed-select');
 const catInfo = document.querySelector('.cat-info');
 const loader = document.querySelector('.loader');
 const error = document.querySelector('.error');
 
-const breeds = fetchBreeds()
+fetchBreeds()
   .then(response => {
     for (const element of response.data) {
       const option = document.createElement('option');
@@ -22,9 +22,27 @@ const breeds = fetchBreeds()
   });
 
 breedSelect.addEventListener('change', e => {
-  const a = breedSelect.selectedIndex;
+  catInfo.innerHTML = '';
+  catInfo.style.visibility = 'hidden';
+  loader.style.visibility = 'visible';
 
-  const breedId = breedSelect.options[a].value;
+  const selectedBreedIndex = breedSelect.selectedIndex;
+  const breedId = breedSelect.options[selectedBreedIndex].value;
+
+  fetchCatImage(breedId)
+    .then(response => {
+      const img = document.createElement('img');
+      console.log(response);
+      const imgUrl = response.data[0].url;
+      console.log(imgUrl);
+      img.src = imgUrl;
+      catInfo.append(img);
+      img.maxWidth = 400;
+      img.height = 200;
+    })
+    .catch(e => {
+      error.style.visibility = 'visible';
+    });
 
   fetchCatByBreed(breedId);
 });
